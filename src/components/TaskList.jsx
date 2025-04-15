@@ -6,6 +6,8 @@ import {
   useDeleteTaskMutation,
   useGetProfileQuery,
 } from "../store/api/apiSlice";
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 const TaskList = () => {
   const [search, setSearch] = useState("");
@@ -69,7 +71,7 @@ const TaskList = () => {
             <div className="card h-100">
               {task.image && (
                 <img
-                  src={`http://localhost:5000/${task.image}`}
+                  src={`${apiUrl}/${task.image}`}
                   className="card-img-top"
                   alt={task.title}
                   style={{ maxHeight: "150px", objectFit: "cover" }}
