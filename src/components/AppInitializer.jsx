@@ -13,7 +13,7 @@ export default function AppInitializer({ children }) {
     const restoreSession = async () => {
       const storedAccessToken = localStorage.getItem("accessToken");
       const storedRefreshToken = localStorage.getItem("refreshToken");
-
+      let storeUserdata = JSON.parse(localStorage.getItem("userData")); 
       if (storedAccessToken && storedRefreshToken) {
         try {
           const decoded = jwtDecode(storedAccessToken);
@@ -22,6 +22,8 @@ export default function AppInitializer({ children }) {
               setCredentials({
                 accessToken: storedAccessToken,
                 refreshToken: storedRefreshToken,
+                id: storeUserdata?.id,
+                role: storeUserdata?.role,
               })
             );
           } else {
@@ -32,6 +34,8 @@ export default function AppInitializer({ children }) {
               setCredentials({
                 accessToken: result.accessToken,
                 refreshToken: storedRefreshToken,
+                id:storeUserdata?.id,
+                role:storeUserdata?.role
               })
             );
           }

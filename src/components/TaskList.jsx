@@ -6,7 +6,7 @@ import {
   useDeleteTaskMutation,
   useGetProfileQuery,
 } from "../store/api/apiSlice";
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.VITE_API_IMAGE;
 
 
 const TaskList = () => {
@@ -66,12 +66,14 @@ const TaskList = () => {
       </div>
       <TaskForm task={editingTask} onSave={handleSave} />
       <div className="row">
-        {tasks.map((task) => (
+        {tasks.map((task) =>
+        (
           <div className="col-md-4 mb-3" key={task._id}>
             <div className="card h-100">
               {task.image && (
+                
                 <img
-                  src={`${apiUrl}/${task.image}`}
+                  src={`${apiUrl}${task.image}`}
                   className="card-img-top"
                   alt={task.title}
                   style={{ maxHeight: "150px", objectFit: "cover" }}

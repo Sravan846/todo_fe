@@ -10,7 +10,6 @@ import AdminPage from "./pages/AdminPage";
 import Navbar from "./components/Navbar";
 import NotFoundPage from "./components/NotFoundPage";
 
-
 const ProtectedRoute = ({ element, adminOnly }) => {
   const { user } = useSelector((state) => state.auth);
 
@@ -29,7 +28,7 @@ const App = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar user={user} handleLogout={handleLogout} />
       <Routes>
         <Route path="/" element={user ? <Home /> : <LoginPage />} />
         <Route
