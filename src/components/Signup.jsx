@@ -1,12 +1,13 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { useSignupMutation } from "../store/api/apiSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const signupSchema = Yup.object().shape({
-  username: Yup.string().required("Email is required"),
+  username: Yup.string().required("Username is required"),
   email: Yup.string()
     .email("Please enter a valid email")
     .required("Email is required"),
@@ -22,6 +23,7 @@ export default function Signup() {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const [signup, { isLoading }] = useSignupMutation();
   const navigate = useNavigate();
 
@@ -117,23 +119,40 @@ export default function Signup() {
                 <label htmlFor="password" className="form-label">
                   Password
                 </label>
-                <input
-                  type="password"
-                  className={`form-control ${
-                    errors.password ? "is-invalid" : ""
-                  }`}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Enter password"
-                />
+                <div className="input-group">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className={`form-control ${
+                      errors.password ? "is-invalid" : ""
+                    }`}
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Enter password"
+                  />
+                  <div className="input-group-append">
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                    >
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEyeSlash : faEye}
+                      />
+                    </button>
+                  </div>
+                </div>
                 {errors.password && (
                   <div className="invalid-feedback">{errors.password}</div>
                 )}
               </div>
-              <button type="submit" className="btn btn-primary w-100">
-                Signup
+              <button
+                type="submit"
+                className="btn btn-primary w-100"
+                disabled={isLoading}
+              >
+                {isLoading ? "Signing up..." : "Signup"}
               </button>
             </form>
           </div>

@@ -5,6 +5,8 @@ import * as Yup from "yup";
 import { useLoginMutation } from "../store/api/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../store/slices/authSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -21,6 +23,7 @@ export default function Login() {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -58,8 +61,6 @@ export default function Login() {
           role: result.role,
         })
       );
-      
-      console.log("🚀 ~ handleSubmit ~ role:", user)
       toast.success("Logged in successfully!");
       navigate("/");
     } catch (error) {
@@ -78,6 +79,7 @@ export default function Login() {
       }
     }
   };
+
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">
@@ -106,17 +108,30 @@ export default function Login() {
                 <label htmlFor="password" className="form-label">
                   Password
                 </label>
-                <input
-                  type="password"
-                  className={`form-control ${
-                    errors.password ? "is-invalid" : ""
-                  }`}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Enter password"
-                />
+                <div className="input-group">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className={`form-control ${
+                      errors.password ? "is-invalid" : ""
+                    }`}
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Enter password"
+                  />
+                  <div className="input-group-append">
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                    >
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEyeSlash : faEye}
+                      />
+                    </button>
+                  </div>
+                </div>
                 {errors.password && (
                   <div className="invalid-feedback">{errors.password}</div>
                 )}
